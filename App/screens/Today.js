@@ -10,11 +10,17 @@ import {
   View
 } from 'react-native';
 
+import Meal from '../components/Meal';
+
+
+
 export default function Today({navigation}) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Bonjour Today </Text>
+      <Meal title="Petit déjeuner"/>
+      <Meal title="Déjeuner"/>
+      <Meal title="Diner"/>
       <TouchableOpacity onPress={() => navigation.navigate('Search')}> 
         <Text>Rechercher</Text>
       </TouchableOpacity>
@@ -27,7 +33,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    justifyContent: "center"
   },
   foodImage: {
     width: 150,
