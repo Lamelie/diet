@@ -8,11 +8,13 @@ import {
   Image,
   TouchableOpacity, 
   TextInput,
-  View
+  View,
+  Button
 } from 'react-native';
-import Food from "../../foods.json"
 
 export default Search = () => {
+
+  const [textInputValue, setTextInputValue] = React.useState('');
 
   const[food, setFood] = useState([]);
 
@@ -26,12 +28,13 @@ export default Search = () => {
       headers: myHeaders,
     };
     
-    let response = await fetch("https://trackapi.nutritionix.com/v2/search/instant?query=salad", requestOptions)
+    let response = await fetch("https://trackapi.nutritionix.com/v2/search/instant?query=" + textInputValue, requestOptions)
     
     let responseResults = await response.json() ;
     {
       setFood(responseResults.branded);
     }
+    console.log(textInputValue)
   }
   
   useEffect(() => {
@@ -40,33 +43,66 @@ export default Search = () => {
   
   return (
     <View style={styles.container}>
-      <Text>Bonjour, Search ! </Text>
-      <TextInput placeholder="Recherche"/>
+      <TextInput 
+        value={textInputValue} 
+        onChangeText={(text) => setTextInputValue(text)}
+        placeholder="Recherche"/>
+      <Button title="+" onPress={getFood}></Button>
       <FlatList 
         data = {food}
         renderItem=  {
           ({item}) => 
-            <Text>{item.food_name}</Text>}
-        keyExtractor={item => JSON.stringify(item.food_name)}  
-      />
+          <TouchableOpacity style={styles.ingredientList}>
+            <Image
+            style={styles.foodImage}
+            source={{uri: item.photo.thumb}}
+            />
+            <Text style={styles.foodName}>{item.food_name}</Text>
+            <Text style={styles.addFood}>+</Text>
+          </TouchableOpacity>}
+        keyExtractor={item => JSON.stringify(item.food_name)}
+      /> 
     </View>
   )
 }
 
 
 const styles = StyleSheet.create({
+  addFood: {
+    backgroundColor: "blue",
+    color:"white",
+    fontSize: 25,
+    width: 50,
+    borderRadius: 50,
+    textAlign: "center",
+    textAlignVertical: "center"
+
+  },
   container: {
     flex: 1,
     padding: 10,
     justifyContent: "center"
   },
   foodImage: {
-    width: 150,
-    height: 150,
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+  },
+  foodName: {
+    textAlignVertical: "center",
+
   },
   BigFoodImage: {
     width: 250,
     height: 250,
+  },
+  ingredientList: {
+    padding: 10,
+    backgroundColor: "#d7dadd",
+    borderWidth: 2,
+    borderColor: "white",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   loader: {
     flex: 1,

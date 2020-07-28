@@ -12,8 +12,6 @@ import {
 
 import Meal from '../components/Meal';
 
-
-
 export default function Today({navigation}) {
 
   return (
