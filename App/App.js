@@ -14,7 +14,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="AUJOURD'HUI" component={Today} />
+        <Stack.Screen name='Today' component={Today} options={() => ({ title: 'AUJOURD\'HUI'})} />
         <Stack.Screen name="Search" component={Search} options={() => ({ title: 'AJOUTER UN ALIMENT'})} />
       </Stack.Navigator>
     </NavigationContainer>

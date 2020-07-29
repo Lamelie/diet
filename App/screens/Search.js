@@ -1,7 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, * as react from 'react';
 import {
-  ActivityIndicator,
-  SafeAreaView,
   StyleSheet,
   Text,
   FlatList,
@@ -9,14 +7,17 @@ import {
   TouchableOpacity, 
   TextInput,
   View,
-  Button
 } from 'react-native';
 
-export default Search = () => {
+import NetInfo from "@react-native-community/netinfo";
+import Icon from 'react-native-vector-icons/FontAwesome5';
+
+export default Search = ({navigation}) => {
+
 
   const [textInputValue, setTextInputValue] = React.useState('');
 
-  const[food, setFood] = useState([]);
+  const[food, setFood] = react.useState([]);
 
   const getFood = async () => {
     const myHeaders = new Headers();
@@ -31,28 +32,31 @@ export default Search = () => {
     let response = await fetch("https://trackapi.nutritionix.com/v2/search/instant?query=" + textInputValue, requestOptions)
     
     let responseResults = await response.json() ;
-    {
-      setFood(responseResults.branded);
-    }
+    {setFood(responseResults.branded);}
     console.log(textInputValue)
   }
   
-  useEffect(() => {
+  react.useEffect(() => {
     getFood()
   }, []);
   
   return (
     <View style={styles.container}>
-      <TextInput 
-        value={textInputValue} 
-        onChangeText={(text) => setTextInputValue(text)}
-        placeholder="Recherche"/>
-      <Button title="+" onPress={getFood}></Button>
+      <View style={styles.formContainer}>
+        <TextInput 
+          value={textInputValue} 
+          onChangeText={(text) => setTextInputValue(text)}
+          placeholder="Recherche"/>
+        <Icon.Button onPress={getFood} name="search"/>
+      </View>
       <FlatList 
         data = {food}
         renderItem=  {
           ({item}) => 
-          <TouchableOpacity style={styles.ingredientList}>
+          <TouchableOpacity 
+          style={styles.ingredientList}
+          onPress={() => navigation.navigate('Today', {
+            name: item.food_name})}>
             <Image
             style={styles.foodImage}
             source={{uri: item.photo.thumb}}
@@ -65,7 +69,6 @@ export default Search = () => {
     </View>
   )
 }
-
 
 const styles = StyleSheet.create({
   addFood: {
@@ -92,9 +95,11 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
 
   },
-  BigFoodImage: {
-    width: 250,
-    height: 250,
+  formContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between"
+
   },
   ingredientList: {
     padding: 10,

@@ -12,20 +12,15 @@ import {
 
 import Meal from '../components/Meal';
 
-export default function Today({navigation}) {
-
+export default Today = ({route}) => {
   return (
-    <SafeAreaView style={styles.container}>
-      <Meal title="Petit déjeuner"/>
+    <SafeAreaView style={styles.container}>     
+      <Meal title="Petit déjeuner" params={route.params}/>   
       <Meal title="Déjeuner"/>
       <Meal title="Diner"/>
-      <TouchableOpacity onPress={() => navigation.navigate('Search')}> 
-        <Text>Rechercher</Text>
-      </TouchableOpacity>
-  </SafeAreaView>
+    </SafeAreaView>
   )
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -35,10 +30,6 @@ const styles = StyleSheet.create({
   foodImage: {
     width: 150,
     height: 150,
-  },
-  BigFoodImage: {
-    width: 250,
-    height: 250,
   },
   loader: {
     flex: 1,
