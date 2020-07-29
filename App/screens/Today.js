@@ -16,8 +16,8 @@ export default Today = ({route}) => {
   return (
     <SafeAreaView style={styles.container}>     
       <Meal title="Petit déjeuner" params={route.params}/>   
-      <Meal title="Déjeuner"/>
-      <Meal title="Diner"/>
+      <Meal title="Déjeuner" params={route.params}/>
+      <Meal title="Diner" params={route.params}/>
     </SafeAreaView>
   )
 }

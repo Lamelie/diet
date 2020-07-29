@@ -12,12 +12,14 @@ import {
 import NetInfo from "@react-native-community/netinfo";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-export default Search = ({navigation}) => {
+export default Search = ({navigation, route}) => {
 
 
   const [textInputValue, setTextInputValue] = React.useState('');
 
   const[food, setFood] = react.useState([]);
+
+  console.log('meal :', route.params.meal)
 
   const getFood = async () => {
     const myHeaders = new Headers();
@@ -56,7 +58,8 @@ export default Search = ({navigation}) => {
           <TouchableOpacity 
           style={styles.ingredientList}
           onPress={() => navigation.navigate('Today', {
-            name: item.food_name})}>
+            name: item.food_name, 
+            meal: route.params.meal})}>
             <Image
             style={styles.foodImage}
             source={{uri: item.photo.thumb}}
