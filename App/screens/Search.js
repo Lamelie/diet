@@ -14,7 +14,6 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 export default Search = ({navigation, route}) => {
 
-
   const [textInputValue, setTextInputValue] = React.useState('');
 
   const[food, setFood] = react.useState([]);

@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 
 import { useNavigation } from '@react-navigation/native';
 
-export default Meal = (params, route) => {
+export default Meal = (params) => {
 
   const navigation = useNavigation();
 
@@ -37,21 +37,18 @@ export default Meal = (params, route) => {
 
   useEffect(() => {
     if(params.params) {
-      // switch (meal) {
-      //   case 'petit déjeuner':
-          
-      // }
       let newFoodState = params.params
       newFoodState = [...food, {id: food.length, meal:params.params.meal, name: params.params.name}]
       setFood(newFoodState)}}, [params.params]);
 
-
       //Persist les tasks dans le local storage.
       //await AsyncStorage.setItem('food', JSON.stringify(newFoodState));
-
   
+  const filteredFood = (food, requete) => {
+    return food.filter(el => requete == el.meal)
+  }
+
   const mealFood = ({item}) => (
-    (params.title == params.params.meal) ? 
         <View style={styles.foodItem}>           
             <Text >{item.name}
             </Text>           
@@ -59,8 +56,7 @@ export default Meal = (params, route) => {
             <Text 
             style={styles.removeButton}>X</Text>
           </TouchableOpacity> 
-        </View> : <Text>Nada</Text>)
-  
+        </View>) 
 
   return (
     <View>
@@ -73,7 +69,7 @@ export default Meal = (params, route) => {
         </TouchableOpacity> 
       </View>
       <FlatList
-      data={food}
+      data={filteredFood(food, params.title)}
       renderItem={mealFood}
       keyExtractor={item => 'key' + item.name}
       />    
