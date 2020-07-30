@@ -5,6 +5,7 @@ import {
   Text, 
   View,
   FlatList,
+  Image,
 } from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage'
@@ -21,6 +22,7 @@ export default Meal = (params) => {
   console.log("food:", food)
   console.log("params: ", params.params)
   console.log('title :', params.title)
+  console.log('image:', params.params.image)
 
   const restoreDataFromAsyncStorage = async () => {
     try {
@@ -39,7 +41,7 @@ export default Meal = (params) => {
   useEffect(() => {
     if(params.params) {
       let newFoodState = params.params
-      newFoodState = [...food, {id: food.length, meal:params.params.meal, name: params.params.name}]
+      newFoodState = [...food, {id: food.length, meal:params.params.meal, image: params.params.image, name: params.params.name}]
       setFood(newFoodState) 
       AsyncStorage.setItem('food', JSON.stringify(newFoodState))
     }}, [params.params],
@@ -58,7 +60,11 @@ export default Meal = (params) => {
   }
 
   const mealFood = ({item}) => (
-    <View style={styles.foodItem}>           
+    <View style={styles.foodItem}>
+        <Image
+          style={styles.foodImage}
+          source={{uri: item.image}}
+        />           
         <Text style={styles.foodText} >{item.name}
         </Text>           
       <TouchableOpacity onPress={() => remove(item)}>
@@ -75,9 +81,9 @@ export default Meal = (params) => {
         </TouchableOpacity> 
       </View>
       <FlatList
-      data={filteredFood(food, params.title)}
-      renderItem={mealFood}
-      keyExtractor={item => 'key' + item.name + Math.random()}
+        data={filteredFood(food, params.title)}
+        renderItem={mealFood}
+        keyExtractor={item => 'key' + item.name + Math.random()}
       />  
       <View>{(food.length === 0 ) ?<Text style={styles.foodItem}>Il n'y a pas d'aliment pour ce repas</Text>:null}
       </View>  
@@ -116,12 +122,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  foodImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 50,
+  },
   foodText: {
     color: "#6eadc0",
+    textAlign: "center",
     fontSize: 18,
     marginBottom: 3,
-    width: 300,
-    height: 40,
+    maxWidth: 250,
     paddingVertical: 10,
   },
   mealItem: {

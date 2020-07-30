@@ -73,6 +73,7 @@ export default Search = ({navigation, route}) => {
           style={styles.ingredientList}
           onPress={() => navigation.navigate('Today', {
             name: item.food_name, 
+            image: item.photo.thumb,
             meal: route.params.meal})}>
             <Image
             style={styles.foodImage}
