@@ -14,8 +14,38 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name='Today' component={Today} options={() => ({ title: 'AUJOURD\'HUI'})} />
-        <Stack.Screen name="Search" component={Search} options={() => ({ title: 'AJOUTER UN ALIMENT'})} />
+        <Stack.Screen 
+          name='Today' 
+          component={Today} 
+          options={() => ({ 
+            title: 'AUJOURD\'HUI',
+            headerstyle: {
+              backgroundColor: '#d7e7f6',
+            },
+            headerTintColor: "#6eadc0",
+            headerTitleStyle: {
+              flex: 1,
+              alignSelf:"center"
+              }           
+            })
+          } 
+        />
+        <Stack.Screen 
+          name="Search" 
+          component={Search} 
+          options={() => ({ 
+            title: 'AJOUTER UN ALIMENT',
+            headerstyle: {
+              backgroundColor: '#d7e7f6',
+            },
+            headerTintColor: "#6eadc0",
+            headerTitleStyle: {
+              flex: 1,
+              alignSelf:"center"
+              }           
+            })
+          } 
+        />
       </Stack.Navigator>
     </NavigationContainer>
   )

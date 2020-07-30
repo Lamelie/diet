@@ -11,6 +11,8 @@ import AsyncStorage from '@react-native-community/async-storage'
 
 import { useNavigation } from '@react-navigation/native';
 
+import Icon from 'react-native-vector-icons/FontAwesome5';
+
 export default Meal = (params) => {
 
   const navigation = useNavigation();
@@ -19,7 +21,6 @@ export default Meal = (params) => {
   console.log("food:", food)
   console.log("params: ", params.params)
   console.log('title :', params.title)
-  //console.log('meal :', params.meal)
 
   const restoreDataFromAsyncStorage = async () => {
     try {
@@ -27,6 +28,7 @@ export default Meal = (params) => {
       console.log("localStorageFood :", localStorageFood);
       return localStorageFood != null ? setFood(JSON.parse(localStorageFood)) : null;
     }catch (error) {
+      console.log("error : ", error)
     }
   }
 
@@ -41,83 +43,99 @@ export default Meal = (params) => {
       setFood(newFoodState) 
       AsyncStorage.setItem('food', JSON.stringify(newFoodState))
     }}, [params.params],
+  );
 
-      );
-
-  const filteredFood = (food, repas) => {
-    return food.filter(el => repas == el.meal)
+  const filteredFood = (food, meal) => {
+    return food.filter(el => meal == el.meal)
   }
 
   const remove = (item) => {
-    console.log('item', item)
+    console.log('removeditem', item)
     let newFoodState = [...food];
     newFoodState = food.filter(({id}) => id !== item.id)
     setFood(newFoodState)
-
     AsyncStorage.setItem('food', JSON.stringify(newFoodState));
-
   }
 
   const mealFood = ({item}) => (
-        <View style={styles.foodItem}>           
-            <Text >{item.name}
-            </Text>           
-          <TouchableOpacity onPress={() => remove(item)}>
-            <Text 
-            style={styles.removeButton}>X</Text>
-          </TouchableOpacity> 
-        </View>)
+    <View style={styles.foodItem}>           
+        <Text style={styles.foodText} >{item.name}
+        </Text>           
+      <TouchableOpacity onPress={() => remove(item)}>
+        <Icon style={styles.deleteFood} name="times"/>
+      </TouchableOpacity> 
+    </View>)
 
   return (
     <View>
-      <View style={styles.foodItem}>
+      <View style={styles.mealItem}>
         <Text style={styles.mealTitle}>{params.title}</Text>
         <TouchableOpacity onPress={() => navigation.navigate('Search',  {meal: params.title})}>
-          <Text 
-          style={styles.addButton} 
-          >+</Text>         
+        <Icon style={styles.addFood} name="plus"/>        
         </TouchableOpacity> 
       </View>
       <FlatList
       data={filteredFood(food, params.title)}
       renderItem={mealFood}
-      keyExtractor={item => 'key' + item.name}
+      keyExtractor={item => 'key' + item.name + Math.random()}
       />  
-      <View>{(food.length === 0 ) ?<Text>Il n'y a pas d'aliment pour ce repas</Text>:null}</View>  
+      <View>{(food.length === 0 ) ?<Text style={styles.foodItem}>Il n'y a pas d'aliment pour ce repas</Text>:null}
+      </View>  
     </View>
   )
 }
   
 const styles = StyleSheet.create({
-  foodItem: {
-    flexDirection: "row",
-    padding: 10,
-    justifyContent: "space-between"
 
-  },
-  mealTitle: {
-    fontSize : 20,
-
-  },
-  mealText: {
-    fontSize : 14,
-    padding: 15,
-  },
-  addButton: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize : 25,
-    backgroundColor: "blue",
-    width: 35,
+  addFood: {
+    backgroundColor: "#6eadc0",
+    color:"white",
+    fontSize: 25,
+    width: 50,
+    height: 50,
     borderRadius: 50,
-    textAlign : "center",
+    textAlign: "center",
+    textAlignVertical: "center"
   },
-  removeButton: {
+  deleteFood: {
     color: "red",
     fontWeight: "bold",
     fontSize : 25,
-    width: 35,
+    width: 50,
     borderRadius: 50,
     textAlign : "center",
-  }
+  },
+  flatList: {
+    backgroundColor: "#d3e8ef",
+    margin: 10,
+  },
+  foodItem: {
+    flexDirection: "row",
+    paddingLeft: 18,
+    paddingRight: 10,
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  foodText: {
+    color: "#6eadc0",
+    fontSize: 18,
+    marginBottom: 3,
+    width: 300,
+    height: 40,
+    paddingVertical: 10,
+  },
+  mealItem: {
+    flexDirection: "row",
+    padding: 10,
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  mealTitle: {
+    color: "#578796",
+    fontSize : 20,
+    backgroundColor: "#c5dee5",
+    width: 320,
+    padding: 8,
+  },
+
 });

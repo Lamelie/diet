@@ -55,16 +55,15 @@ export default Search = ({navigation, route}) => {
     getFood()
   }, []);
 
-  
-  
   return (
     <View style={styles.container}>
       <View style={styles.formContainer}>
         <TextInput 
+          style={styles.formInput}
           value={textInputValue} 
           onChangeText={(text) => setTextInputValue(text)}
-          placeholder="Recherche"/>
-        <Icon.Button onPress={getFood} name="search"/>
+          placeholder="Ecrivez votre recherche ici"/>
+        <Icon style={styles.addFood} onPress={getFood} name="search"/>
       </View>
       <FlatList 
         data = {food}
@@ -80,7 +79,7 @@ export default Search = ({navigation, route}) => {
             source={{uri: item.photo.thumb}}
             />
             <Text style={styles.foodName}>{item.food_name}</Text>
-            <Text style={styles.addFood}>+</Text>
+            <Icon style={styles.addFood} name="plus"/>
           </TouchableOpacity>}
         keyExtractor={item => JSON.stringify(item.food_name)}
       /> 
@@ -90,14 +89,14 @@ export default Search = ({navigation, route}) => {
 
 const styles = StyleSheet.create({
   addFood: {
-    backgroundColor: "blue",
+    backgroundColor: "#6eadc0",
     color:"white",
     fontSize: 25,
     width: 50,
+    height: 50,
     borderRadius: 50,
     textAlign: "center",
     textAlignVertical: "center"
-
   },
   container: {
     flex: 1,
@@ -111,17 +110,26 @@ const styles = StyleSheet.create({
   },
   foodName: {
     textAlignVertical: "center",
-
+    textAlign: "center",
+    color: "#578796",
+    fontSize : 15,
+    maxWidth: 230,
   },
   formContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between"
-
+    justifyContent: "space-between",
+    height: 70,
+  },
+  formInput: {
+    fontSize: 20,
+    backgroundColor: "#d7e6eb",
+    width: 320,
+    padding: 10,
   },
   ingredientList: {
     padding: 10,
-    backgroundColor: "#d7dadd",
+    backgroundColor: "#d7e6eb",
     borderWidth: 2,
     borderColor: "white",
     flexDirection: "row",
