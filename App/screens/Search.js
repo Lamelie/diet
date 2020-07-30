@@ -14,6 +14,20 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 export default Search = ({navigation, route}) => {
 
+  const unsubscribe = NetInfo.addEventListener(state => {
+    console.log("Connection type", state.type);
+    console.log("Is connected?", state.isConnected);
+  });
+  
+  // Unsubscribe
+  unsubscribe();
+
+  NetInfo.fetch().then(state => {
+    console.log("Connection type", state.type);
+    !state.isConnected ?
+    alert("Vérifiez votre connexion !", state.isConnected) : null;
+  });
+
   const [textInputValue, setTextInputValue] = React.useState('');
 
   const[food, setFood] = react.useState([]);
@@ -40,6 +54,8 @@ export default Search = ({navigation, route}) => {
   react.useEffect(() => {
     getFood()
   }, []);
+
+  
   
   return (
     <View style={styles.container}>

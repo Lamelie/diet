@@ -21,7 +21,7 @@ export default Meal = (params) => {
   console.log('title :', params.title)
   //console.log('meal :', params.meal)
 
-  /**const restoreDataFromAsyncStorage = async () => {
+  const restoreDataFromAsyncStorage = async () => {
     try {
       const localStorageFood = await AsyncStorage.getItem('food');
       console.log("localStorageFood :", localStorageFood);
@@ -32,31 +32,41 @@ export default Meal = (params) => {
 
   useEffect(()=>{
     restoreDataFromAsyncStorage()
-  }, []);**/
-
+  }, []);
 
   useEffect(() => {
     if(params.params) {
       let newFoodState = params.params
       newFoodState = [...food, {id: food.length, meal:params.params.meal, name: params.params.name}]
-      setFood(newFoodState)}}, [params.params]);
+      setFood(newFoodState) 
+      AsyncStorage.setItem('food', JSON.stringify(newFoodState))
+    }}, [params.params],
 
-      //Persist les tasks dans le local storage.
-      //await AsyncStorage.setItem('food', JSON.stringify(newFoodState));
-  
-  const filteredFood = (food, requete) => {
-    return food.filter(el => requete == el.meal)
+      );
+
+  const filteredFood = (food, repas) => {
+    return food.filter(el => repas == el.meal)
+  }
+
+  const remove = (item) => {
+    console.log('item', item)
+    let newFoodState = [...food];
+    newFoodState = food.filter(({id}) => id !== item.id)
+    setFood(newFoodState)
+
+    AsyncStorage.setItem('food', JSON.stringify(newFoodState));
+
   }
 
   const mealFood = ({item}) => (
         <View style={styles.foodItem}>           
             <Text >{item.name}
             </Text>           
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => remove(item)}>
             <Text 
             style={styles.removeButton}>X</Text>
           </TouchableOpacity> 
-        </View>) 
+        </View>)
 
   return (
     <View>
@@ -72,7 +82,8 @@ export default Meal = (params) => {
       data={filteredFood(food, params.title)}
       renderItem={mealFood}
       keyExtractor={item => 'key' + item.name}
-      />    
+      />  
+      <View>{(food.length === 0 ) ?<Text>Il n'y a pas d'aliment pour ce repas</Text>:null}</View>  
     </View>
   )
 }

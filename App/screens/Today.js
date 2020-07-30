@@ -11,13 +11,16 @@ import {
 } from 'react-native';
 
 import Meal from '../components/Meal';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default Today = ({route}) => {
   return (
-    <SafeAreaView style={styles.container}>     
-      <Meal title="Petit déjeuner" params={route.params}/>   
-      <Meal title="Déjeuner" params={route.params}/>
-      <Meal title="Diner" params={route.params}/>
+    <SafeAreaView style={styles.container}> 
+      <ScrollView>   
+        <Meal title="Petit déjeuner" params={route.params}/>   
+        <Meal title="Déjeuner" params={route.params}/>
+        <Meal title="Diner" params={route.params}/>
+      </ScrollView> 
     </SafeAreaView>
   )
 }
