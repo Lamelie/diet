@@ -1,13 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {
-  ActivityIndicator,
   SafeAreaView,
   StyleSheet,
-  Text,
-  FlatList,
-  Image,
-  TouchableOpacity, 
-  View
 } from 'react-native';
 
 import Meal from '../components/Meal';
@@ -16,7 +10,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 export default Today = ({route}) => {
   return (
     <SafeAreaView style={styles.container}> 
-      <ScrollView>   
+      <ScrollView>  
+         {/* on fait passer des props au composant Meal : le title et "params" qui contient toutes les données relatives aux aliments : id, name, photo et le "meal" concerné  */}
         <Meal title="Petit déjeuner" params={route.params}/>   
         <Meal title="Déjeuner" params={route.params}/>
         <Meal title="Diner" params={route.params}/>

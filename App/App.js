@@ -4,6 +4,8 @@ import React from 'react';
 import Today from './screens/Today';
 import Search from './screens/Search';
 
+//import des composants pour générer une navigation entre écrans
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
